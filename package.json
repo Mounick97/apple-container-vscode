@@ -11,10 +11,21 @@
   ],
   "activationEvents": [
     "onCommand:apple-container.listContainers",
-    "onCommand:apple-container.startSystem"
+    "onCommand:apple-container.startSystem",
+    "onCommand:apple-container.refreshContainers"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "menus": {
+    "view/title": [
+      {
+        "command": "apple-container.refreshContainers",
+        "when": "view == appleContainersView",
+        "group": "navigation"
+      }
+    ]
+    },
+
     "commands": [
       {
         "command": "apple-container.listContainers",
@@ -23,7 +34,13 @@
       {
       "command": "apple-container.startSystem",
       "title": "Container: Start System"
+      },
+      {
+        "command": "apple-container.refreshContainers",
+        "title": "Container: Refresh Containers",
+        "icon": "$(refresh)"
       }
+
     ],
     "views": {
       "explorer": [
@@ -35,6 +52,16 @@
     }
 
 
+  },
+  "viewsWelcome": [],
+  "viewsContainers": {
+    "appleContainersView": [
+      {
+        "command": "apple-container.refreshContainers",
+        "title": "Refresh",
+        "icon": "refresh"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

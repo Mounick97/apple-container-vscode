@@ -6,15 +6,28 @@ import {
 } from './cli/container';
 import { ContainersTreeProvider } from './tree/containersTreeProvider';
 
-const containersTreeProvider = new ContainersTreeProvider();
-
-vscode.window.registerTreeDataProvider(
-  'appleContainersView',
-  containersTreeProvider
-);
-
 export function activate(context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand(
+
+  // Tree provider
+  const containersTreeProvider = new ContainersTreeProvider();
+
+  vscode.window.registerTreeDataProvider(
+    'appleContainersView',
+    containersTreeProvider
+  );
+
+  // Refresh command
+  const refreshContainers = vscode.commands.registerCommand(
+    'apple-container.refreshContainers',
+    () => {
+      containersTreeProvider.refresh();
+    }
+  );
+
+  context.subscriptions.push(refreshContainers);
+
+  // List containers command
+  const listContainersCommand = vscode.commands.registerCommand(
     'apple-container.listContainers',
     async () => {
       const output = vscode.window.createOutputChannel('Apple Container');
@@ -67,8 +80,9 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(listContainersCommand);
 
+  // Start system command
   const startSystem = vscode.commands.registerCommand(
     'apple-container.startSystem',
     async () => {
@@ -93,7 +107,6 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(startSystem);
-
 }
 
 export function deactivate() {}
