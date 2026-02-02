@@ -48,6 +48,32 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+  
+  const startSystem = vscode.commands.registerCommand(
+    'apple-container.startSystem',
+    async () => {
+      const output = vscode.window.createOutputChannel('Apple Container');
+      output.show();
+      output.appendLine('Starting container system...\n');
+
+      try {
+        const result = await runContainerCommand(['system', 'start']);
+        output.appendLine(result || 'Container system started.');
+        vscode.window.showInformationMessage(
+          'Container system started successfully.'
+        );
+      } catch (err) {
+        if (err instanceof ContainerError) {
+          output.appendLine(`Error:\n${err.message}`);
+        } else {
+          output.appendLine(`Unexpected error:\n${String(err)}`);
+        }
+      }
+    }
+  );
+
+  context.subscriptions.push(startSystem);
+
 }
 
 export function deactivate() {}

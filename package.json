@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:apple-container.listContainers"
+    "onCommand:apple-container.listContainers",
+    "onCommand:apple-container.startSystem"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,6 +19,10 @@
       {
         "command": "apple-container.listContainers",
         "title": "Container: List Containers"
+      },
+      {
+      "command": "apple-container.startSystem",
+      "title": "Container: Start System"
       }
     ]
   },
