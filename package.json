@@ -54,6 +54,10 @@
     "views": {
       "appleContainers": [
       {
+        "id": "appleContainersDashboard",
+        "name": "Dashboard"
+      },
+      {
         "id": "appleContainersView",
         "name": "Containers"
       }

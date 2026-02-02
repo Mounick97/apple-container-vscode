@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { DashboardViewProvider } from './webview/dashboardViewProvider';
 import {
   listContainers,
   runContainerCommand,
@@ -6,7 +7,18 @@ import {
 } from './cli/container';
 import { ContainersTreeProvider } from './tree/containersTreeProvider';
 
+
 export function activate(context: vscode.ExtensionContext) {
+
+  // 1. Dashboard WebView
+  const dashboardProvider = new DashboardViewProvider(context);
+
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      DashboardViewProvider.viewType,
+      dashboardProvider
+    )
+  );
 
   // Tree provider
   const containersTreeProvider = new ContainersTreeProvider();
