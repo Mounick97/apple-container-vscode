@@ -16,6 +16,15 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "appleContainers",
+          "title": "Apple Containers",
+          "icon": "media/container.svg"
+        }
+      ]
+    },
     "menus": {
     "view/title": [
       {
@@ -43,13 +52,13 @@
 
     ],
     "views": {
-      "explorer": [
-        {
-          "id": "appleContainersView",
-          "name": "Apple Containers"
-        }
-      ]
-    }
+      "appleContainers": [
+      {
+        "id": "appleContainersView",
+        "name": "Containers"
+      }
+    ]
+  }
 
 
   },
