@@ -1,4 +1,6 @@
 import { exec } from 'child_process';
+import { Container } from '../models/container';
+
 
 export type ContainerErrorType =
   | 'CLI_NOT_FOUND'
@@ -64,5 +66,39 @@ export function runContainerCommand(
 
       resolve(stdout);
     });
+  });
+}
+
+export async function listContainers(): Promise<Container[]> {
+  const output = await runContainerCommand(['list']);
+
+  const lines = output
+    .split('\n')
+    .map(l => l.trim())
+    .filter(Boolean);
+
+  // Only header present → no containers
+  if (lines.length <= 1) {
+    return [];
+  }
+
+  // Remove header row
+  const dataLines = lines.slice(1);
+
+  return dataLines.map(line => {
+    // Split on 2+ spaces to preserve column integrity
+    const parts = line.split(/\s{2,}/);
+
+    return {
+      id: parts[0] ?? '',
+      image: parts[1] ?? '',
+      os: parts[2] ?? '',
+      arch: parts[3] ?? '',
+      state: (parts[4]?.toLowerCase() as Container['state']) || 'unknown',
+      addr: parts[5],
+      cpus: parts[6],
+      memory: parts[7],
+      started: parts[8]
+    };
   });
 }

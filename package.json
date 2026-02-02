@@ -24,7 +24,17 @@
       "command": "apple-container.startSystem",
       "title": "Container: Start System"
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "appleContainersView",
+          "name": "Apple Containers"
+        }
+      ]
+    }
+
+
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

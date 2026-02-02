@@ -1,8 +1,17 @@
 import * as vscode from 'vscode';
 import {
+  listContainers,
   runContainerCommand,
   ContainerError
 } from './cli/container';
+import { ContainersTreeProvider } from './tree/containersTreeProvider';
+
+const containersTreeProvider = new ContainersTreeProvider();
+
+vscode.window.registerTreeDataProvider(
+  'appleContainersView',
+  containersTreeProvider
+);
 
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
@@ -13,8 +22,19 @@ export function activate(context: vscode.ExtensionContext) {
       output.appendLine('Running: container list...\n');
 
       try {
-        const result = await runContainerCommand(['list']);
-        output.appendLine(result || 'No containers found.');
+        const containers = await listContainers();
+
+        if (containers.length === 0) {
+          output.appendLine('No containers found.');
+          return;
+        }
+
+        containers.forEach(c => {
+          output.appendLine(
+            `${c.id}  ${c.image}  (${c.state})`
+          );
+        });
+
       } catch (err) {
         if (err instanceof ContainerError) {
           switch (err.type) {
@@ -48,7 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
-  
+
   const startSystem = vscode.commands.registerCommand(
     'apple-container.startSystem',
     async () => {
