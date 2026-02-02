@@ -10,14 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:apple-container.helloWorld"
+    "onCommand:apple-container.listContainers"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "apple-container.helloWorld",
-        "title": "Hello World"
+        "command": "apple-container.listContainers",
+        "title": "Container: List Containers"
       }
     ]
   },
